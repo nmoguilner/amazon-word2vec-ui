@@ -14,6 +14,10 @@ export class ProductService {
         return this.http.get(this.baseProductUrl);
     }
 
+    public getProductByAsin(asin: string) {
+        return this.http.get(`${this.baseProductUrl}/${asin}`);
+    }
+
     public getRecommendations(asin, topN): Observable<any> {
         let params = new HttpParams().set('topN', topN);
         return this.http.get(`${this.baseProductUrl}/${asin}/best`, {params});

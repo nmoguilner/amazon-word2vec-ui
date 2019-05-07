@@ -1,4 +1,4 @@
 <h2>Products</h2>
 <div *ngFor="let product of products">
-  <a href="javascript:void(0)" (click)="getRecommendations(product.asin)">{{product.title}}</a>
+  <a href="javascript:void(0)" (click)="goToProduct(product.asin)">{{product.title}}</a>
 </div>
