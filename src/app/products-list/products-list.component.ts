@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../services/product.service';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ProductService} from '../services/product.service';
+import {Router} from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-products-list',
@@ -10,12 +11,20 @@ import { Router } from '@angular/router';
 export class ProductsListComponent implements OnInit {
 
   products = [];
+  totalProducts = 0;
 
-  constructor(private productService: ProductService, private router: Router) { }
+  constructor(
+    private productService: ProductService,
+    private spinner: NgxSpinnerService,
+    private router: Router) {
+  }
 
   ngOnInit() {
+    this.spinner.show();
     this.productService.getProducts().subscribe(data => {
       this.products = data;
+      this.totalProducts = data.length;
+      this.spinner.hide();
     });
   }
 

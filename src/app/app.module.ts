@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import {CustomReuseStrategy} from './app-route-reuse-strategy';
+import {RouteReuseStrategy} from '@angular/router';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +13,7 @@ import { ProductsComponent } from './products/products.component';
 import { ProductService } from './services/product.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductSingleComponent } from './product-single/product-single.component';
+
 
 @NgModule({
   declarations: [
@@ -23,9 +27,11 @@ import { ProductSingleComponent } from './product-single/product-single.componen
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxSpinnerModule
   ],
   providers: [
+    {provide: RouteReuseStrategy, useClass: CustomReuseStrategy},
     ProductService
   ],
   bootstrap: [AppComponent]
