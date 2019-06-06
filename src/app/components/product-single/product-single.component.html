@@ -1,0 +1,44 @@
+<div *ngIf="product">
+  <div>
+    <p>ASIN: {{product.asin}}</p>
+  </div>
+  <div>
+    <p>TITLE: {{product.title}}</p>
+  </div>
+  <div>
+    <p>BRAND: {{product.brand}}</p>
+  </div>
+  <div>
+    <p>CATEGORIES: {{product.categories}}</p>
+  </div>
+  <div>
+    <p>PRICE: {{product.price}}</p>
+  </div>
+  <div>
+    <img [src]="product.imUrl">
+  </div>
+</div>
+<h2>Recommended Products</h2>
+<div *ngIf="recommended">
+  <div *ngFor="let prod of recommended">
+    <div>
+      <p>ASIN: {{prod.asin}}</p>
+    </div>
+    <div>
+      <p>TITLE: {{prod.title}}</p>
+    </div>
+    <div>
+      <p>BRAND: {{prod.brand}}</p>
+    </div>
+    <div>
+      <p>CATEGORIES: {{prod.categories}}</p>
+    </div>
+    <div>
+      <p>PRICE: {{prod.price}}</p>
+    </div>
+    <div>
+      <span>imUrl {{prod.imUrl}}</span>
+      <img [src]="prod.imUrl">
+    </div>
+  </div>
+</div>

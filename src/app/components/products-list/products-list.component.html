@@ -1,0 +1,6 @@
+<h2>Total Products: {{totalProducts}} items</h2>
+<div *ngFor="let product of products">
+  <a [attr.href]="'http://localhost:4200/products/' + product.asin" (click)="goToProduct(product.asin)">{{product.title}}</a>
+  <!--<a href="javascript:void(0)" (click)="goToProduct(product.asin)">{{product.title}}</a>-->
+</div>
+
