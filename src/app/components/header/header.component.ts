@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ProductService} from "../services/product.service";
+import {ProductService} from "../../services/product.service";
+import {CategoryTree} from "../../entities/CategoryTree";
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,7 @@ import {ProductService} from "../services/product.service";
 })
 export class HeaderComponent implements OnInit {
 
-  categories = [];
+  categories: CategoryTree;
 
   constructor(private productService: ProductService) {
   }
@@ -19,20 +20,17 @@ export class HeaderComponent implements OnInit {
 
   getCategories() {
     this.productService.getCategories().subscribe(categories => {
-      this.dicToList(categories);
+      this.categories = this.dicToCategoryTree(categories);
     });
   }
 
-  private dicToList(dictionary) {
-
-    let recursive = (dict, categoryItem: CategoryItem) => {
-
+  private dicToCategoryTree(dictionary) {
+    let recursive = (dict, categoryItem: CategoryTree) => {
       const keys = Object.keys(dict);
       categoryItem.depth++;
-      categoryItem.children.push(...keys.map(k => new CategoryItem(k, [], categoryItem.depth)));
+      categoryItem.children.push(...keys.map(k => new CategoryTree(k, [], categoryItem.depth)));
 
       for (let childNode of categoryItem.children) {
-
         const key = childNode.name;
         const children = Object.keys(dict[key]);
 
@@ -42,23 +40,9 @@ export class HeaderComponent implements OnInit {
       }
     }
 
-    const rootNode = new CategoryItem('root');
+    const rootNode = new CategoryTree('root');
     recursive(dictionary, rootNode);
-
-    console.log(rootNode);
-
+    return rootNode;
   }
 
-}
-
-export class CategoryItem {
-  public name: string;
-  public depth: number;
-  public children: CategoryItem[];
-
-  constructor(name: string, children: CategoryItem[] = [], depth = -1) {
-    this.name = name;
-    this.depth = depth;
-    this.children = children;
-  }
 }

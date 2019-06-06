@@ -6,13 +6,15 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { HomeComponent } from './home/home.component';
-import { ProductsListComponent } from './products-list/products-list.component';
-import { ProductsComponent } from './products/products.component';
+import { HeaderComponent } from './components/header/header.component';
+import { HomeComponent } from './components/home/home.component';
+import { ProductsListComponent } from './components/products-list/products-list.component';
+import { ProductsComponent } from './components/products/products.component';
 import { ProductService } from './services/product.service';
 import { HttpClientModule } from '@angular/common/http';
-import { ProductSingleComponent } from './product-single/product-single.component';
+import { ProductSingleComponent } from './components/product-single/product-single.component';
+import {AccordionModule, BsDropdownModule} from "ngx-bootstrap";
+import { CategoriesTreeComponent } from './components/categories-tree/categories-tree.component';
 
 
 @NgModule({
@@ -22,13 +24,16 @@ import { ProductSingleComponent } from './product-single/product-single.componen
     HomeComponent,
     ProductsListComponent,
     ProductsComponent,
-    ProductSingleComponent
+    ProductSingleComponent,
+    CategoriesTreeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    BsDropdownModule.forRoot(),
+    AccordionModule.forRoot(),
   ],
   providers: [
     {provide: RouteReuseStrategy, useClass: CustomReuseStrategy},
