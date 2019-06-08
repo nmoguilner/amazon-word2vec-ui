@@ -1,44 +1,51 @@
-<div *ngIf="product">
-  <div>
-    <p>ASIN: {{product.asin}}</p>
+<div *ngIf="product" class="product-container">
+
+  <div class="card flex-row flex-wrap">
+    <div class="card-header border-0 product-img-container">
+      <img class="product-img" [src]="product.imUrl" [alt]="product.title">
+    </div>
+    <div class="card-block px-2 product-info">
+      <h4 class="card-title">{{product.asin}} - {{product.title}}</h4>
+      <p class="card-text">
+        <span><strong>Categories:</strong> {{product.categories}}</span>
+      </p>
+      <p class="card-text">
+        <span><strong>Brand:</strong> {{product.brand ? product.brand : 'No info.'}}</span>
+      </p>
+
+      <p class="card-text">
+        <span><strong>Price:</strong> {{product.price ? '$' + product.price : 'No info.'}}</span>
+      </p>
+
+    </div>
+    <div class="w-100"></div>
+    <div class="card-footer w-100 text-muted">
+      <p class="card-text">{{product.description}}</p>
+    </div>
   </div>
-  <div>
-    <p>TITLE: {{product.title}}</p>
-  </div>
-  <div>
-    <p>BRAND: {{product.brand}}</p>
-  </div>
-  <div>
-    <p>CATEGORIES: {{product.categories}}</p>
-  </div>
-  <div>
-    <p>PRICE: {{product.price}}</p>
-  </div>
-  <div>
-    <img [src]="product.imUrl">
-  </div>
+
 </div>
 <h2>Recommended Products</h2>
-<div *ngIf="recommended">
-  <div *ngFor="let prod of recommended">
-    <div>
-      <p>ASIN: {{prod.asin}}</p>
+<div class="card-columns" *ngIf="recommended">
+  <div class="card" *ngFor="let recProd of recommended">
+    <img class="card-img-top" [src]="recProd.imUrl" [alt]="recProd.title">
+    <div class="card-body">
+      <h5 class="card-title">{{recProd.asin}} - {{recProd.title}}</h5>
+      <p class="card-text">
+        <span><strong>Categories:</strong> {{recProd.categories}}</span>
+      </p>
+      <p class="card-text">
+        <span><strong>Brand:</strong> {{recProd.brand ? recProd.brand : 'No info.'}}</span>
+      </p>
+      <p class="card-text">
+        <span><strong>Price:</strong> {{recProd.price ? '$' + recProd.price : 'No info.'}}</span>
+      </p>
+
     </div>
-    <div>
-      <p>TITLE: {{prod.title}}</p>
-    </div>
-    <div>
-      <p>BRAND: {{prod.brand}}</p>
-    </div>
-    <div>
-      <p>CATEGORIES: {{prod.categories}}</p>
-    </div>
-    <div>
-      <p>PRICE: {{prod.price}}</p>
-    </div>
-    <div>
-      <span>imUrl {{prod.imUrl}}</span>
-      <img [src]="prod.imUrl">
+    <div class="card-footer w-100 text-muted">
+      <a [attr.href]="'http://localhost:4200/products/' + recProd.asin" (click)="goToProduct(recProd.asin)"
+         class="btn btn-primary more-info-btn">More info...</a>
     </div>
   </div>
+
 </div>

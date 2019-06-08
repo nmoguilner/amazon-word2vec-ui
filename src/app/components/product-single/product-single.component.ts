@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { NgxSpinnerService } from 'ngx-spinner';
 import {ProductService} from "../../services/product.service";
 
@@ -15,6 +15,7 @@ export class ProductSingleComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private productService: ProductService,
     private spinner: NgxSpinnerService) { }
 
@@ -33,12 +34,18 @@ export class ProductSingleComponent implements OnInit {
   }
 
   getRecommendations(asin) {
-    const topN = 5;
+    const topN = 10;
     return this.productService.getRecommendations(asin, topN).subscribe(data => {
       this.recommended = data.map(d => JSON.parse(d)[0])
       console.log(this.recommended);
       this.spinner.hide();
     });
   }
+
+  goToProduct(asin) {
+    this.router.navigate(['./products/' + asin]);
+  }
+
+
 
 }

@@ -21,7 +21,7 @@ interface RouteStorageObject {
 export class CustomReuseStrategy implements RouteReuseStrategy {
 
   // Routes we want to store for state preservation
-  private acceptedRoutes: string[] = ['products'];
+  private acceptedRoutes: string[] = [];
 
   /**
    * Object which will store RouteStorageObjects indexed by keys
