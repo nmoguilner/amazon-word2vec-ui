@@ -1,6 +1,12 @@
 <h2>Total Products: {{totalProducts}} items</h2>
 <div *ngFor="let product of products">
-  <a [attr.href]="'http://localhost:4200/products/' + product.asin" (click)="goToProduct(product.asin)">{{product.title}}</a>
-  <!--<a href="javascript:void(0)" (click)="goToProduct(product.asin)">{{product.title}}</a>-->
+  <a href="javascript:void(0)" (click)="goToProduct(product.asin)">{{product.title}}</a>
 </div>
 
+
+<div class="row float-right paginator">
+  <div class="col-xs-12 col-12">
+    <pagination [(ngModel)]="paginationModel.currentPage" [boundaryLinks]="true" [totalItems]="totalProducts" [rotate]="false" [itemsPerPage]="itemsPerPage" [maxSize]="5"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="onPageChanged($event)"></pagination>
+  </div>
+</div>

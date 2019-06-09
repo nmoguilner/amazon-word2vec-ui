@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 import {ProductService} from "../../services/product.service";
+import {Product} from "../../entities/Product";
 
 @Component({
   selector: 'app-products-list',
@@ -10,34 +10,39 @@ import {ProductService} from "../../services/product.service";
 })
 export class ProductsListComponent implements OnInit {
 
-  products = [];
+  products: Product[] = [];
   totalProducts = 0;
+  itemsPerPage = 20;
+  paginationModel = {
+    currentPage: 1
+  }
 
   constructor(
     private productService: ProductService,
-    private spinner: NgxSpinnerService,
     private router: Router) {
   }
 
   ngOnInit() {
-    this.spinner.show();
-    this.productService.getProducts().subscribe(data => {
-      this.products = data;
-      this.totalProducts = data.length;
-      this.spinner.hide();
+    this.productService.productsBS.subscribe((products: Product[]) => {
+      if (!products.length) {
+        return;
+      }
+      this.setPage(0, this.itemsPerPage)
+      this.totalProducts = products.length;
     });
   }
 
-  // getRecommendations(asin) {
-  //   const topN = 5;
-  //   return this.productService.getRecommendations(asin, topN).subscribe(data => {
-  //     const recommended = data.map(d => JSON.parse(d))[0]
-  //     console.log(recommended);
-  //   });
-  // }
-
   goToProduct(asin) {
     this.router.navigate(['./products/' + asin]);
+  }
+
+  onPageChanged($paginationEvent) {
+    const to = $paginationEvent.page * $paginationEvent.itemsPerPage;
+    this.setPage(to - $paginationEvent.itemsPerPage, to)
+  }
+
+  private setPage(from: number, to: number) {
+    this.products = this.productService.productsBS.value.slice(from, to);
   }
 
 

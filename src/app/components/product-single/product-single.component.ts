@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import { NgxSpinnerService } from 'ngx-spinner';
 import {ProductService} from "../../services/product.service";
+import {Product} from "../../entities/Product";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-product-single',
@@ -10,42 +11,41 @@ import {ProductService} from "../../services/product.service";
 })
 export class ProductSingleComponent implements OnInit {
 
-  public product;
-  public recommended;
+  public product: Product;
+  public recommended: Product[];
+
+  private topRecommendations = 10;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService) {
+  }
 
   ngOnInit() {
-    this.spinner.show();
     const asin = this.route.snapshot.paramMap.get('asin');
-    this.productService
-      .getProductByAsin(asin)
-      .subscribe((product: string) => {
-        this.product = JSON.parse(product)[0];
-        console.log(this.product);
+
+    this.productService.selectedProductBS
+      .subscribe((product: Product) => {
+        this.product = product;
+        this.recommended = product.recommended;
       });
 
-    this.getRecommendations(asin);
+    this.productService.getProductAndRecommendations(asin, this.topRecommendations);
 
   }
 
-  getRecommendations(asin) {
-    const topN = 10;
-    return this.productService.getRecommendations(asin, topN).subscribe(data => {
-      this.recommended = data.map(d => JSON.parse(d)[0])
-      console.log(this.recommended);
-      this.spinner.hide();
-    });
+  scrollTop() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   }
 
   goToProduct(asin) {
     this.router.navigate(['./products/' + asin]);
+    this.productService.getProductAndRecommendations(asin, this.topRecommendations);
+    this.scrollTop();
   }
-
 
 
 }
