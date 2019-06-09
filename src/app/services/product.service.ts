@@ -13,6 +13,8 @@ export class ProductService {
   public productsBS: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
   public selectedProductBS: Subject<Product> = new Subject<Product>();
 
+  public filteredProducts:Subject<Product[]> = new Subject<Product[]>();
+
   constructor(private http: HttpClient, private spinnerService: NgxSpinnerService) {
   }
 
@@ -50,7 +52,12 @@ export class ProductService {
       this.spinnerService.show();
       return this.getProducts().pipe(
         tap({
-          next: products => {
+          next: (products: Product[])=> {
+            // flatten categories array
+            products = products.map(prod => {
+              prod.categories = prod.categories[0] as string[];
+              return prod;
+            });
             this.productsBS.next(products);
           },
           error: err => console.log(err),
@@ -65,6 +72,23 @@ export class ProductService {
 
   public getCategories(): Observable<any> {
     return this.http.get(`${this.baseProductUrl}/categories`);
+  }
+
+  public searchProducts(text: string) {
+
+    let filtered: Product[] = [];
+    filtered = this.productsBS.value.filter(prod => {
+      return (
+        prod.asin.toLowerCase().includes(text) ||
+        prod.title.toLowerCase().includes(text) ||
+        prod.brand.toLowerCase().includes(text) ||
+        String(prod.price).includes(text) ||
+        prod.description.toLowerCase().includes(text) ||
+        prod.categories.some(cat => cat.toLowerCase().includes(text))
+      );
+    });
+
+    this.filteredProducts.next(filtered);
   }
 
 

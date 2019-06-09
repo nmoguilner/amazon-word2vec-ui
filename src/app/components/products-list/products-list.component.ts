@@ -23,12 +23,20 @@ export class ProductsListComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
     this.productService.productsBS.subscribe((products: Product[]) => {
       if (!products.length) {
         return;
       }
       this.setPage(0, this.itemsPerPage)
       this.totalProducts = products.length;
+    });
+
+    this.productService.filteredProducts.subscribe((products: Product[]) => {
+      this.setPage(0, this.itemsPerPage)
+      this.totalProducts = products.length;
+      this.products = products;
     });
   }
 
