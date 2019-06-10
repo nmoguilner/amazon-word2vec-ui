@@ -1,5 +1,6 @@
 {
-  "name": "angular-app",
+  "name": "amazon-word2vec-ui",
+  "author": "Nicolás Francisco Moguilner Reh <nicolas.moguilner@endava.com>",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

@@ -1,5 +1,4 @@
 <div *ngIf="product" class="product-container">
-
   <div class="card flex-row flex-wrap">
     <div class="card-header border-0 product-img-container">
       <img class="product-img" [src]="product.imUrl" [alt]="product.title">
@@ -23,7 +22,6 @@
       <p class="card-text">{{product.description}}</p>
     </div>
   </div>
-
 </div>
 <h2>Recommended Products</h2>
 <div class="card-columns" *ngIf="recommended">

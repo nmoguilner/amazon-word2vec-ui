@@ -13,7 +13,7 @@ export class ProductService {
   public productsBS: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
   public selectedProductBS: Subject<Product> = new Subject<Product>();
 
-  public filteredProducts:Subject<Product[]> = new Subject<Product[]>();
+  private allProducts: Product[] = [];
 
   constructor(private http: HttpClient, private spinnerService: NgxSpinnerService) {
   }
@@ -30,6 +30,10 @@ export class ProductService {
     let params = new HttpParams().set('topN', topN);
     return this.http
       .get(`${this.baseProductUrl}/${asin}/best`, {params})
+  }
+
+  public resetProducts() {
+    this.productsBS.next(this.allProducts);
   }
 
   public getProductAndRecommendations(asin: string, topN: number) {
@@ -55,9 +59,10 @@ export class ProductService {
           next: (products: Product[])=> {
             // flatten categories array
             products = products.map(prod => {
-              prod.categories = prod.categories[0] as string[];
+              prod.categories = (prod.categories as any)[0];
               return prod;
             });
+            this.allProducts = products;
             this.productsBS.next(products);
           },
           error: err => console.log(err),
@@ -77,7 +82,7 @@ export class ProductService {
   public searchProducts(text: string) {
 
     let filtered: Product[] = [];
-    filtered = this.productsBS.value.filter(prod => {
+    filtered = this.allProducts.filter(prod => {
       return (
         prod.asin.toLowerCase().includes(text) ||
         prod.title.toLowerCase().includes(text) ||
@@ -88,7 +93,7 @@ export class ProductService {
       );
     });
 
-    this.filteredProducts.next(filtered);
+    this.productsBS.next(filtered);
   }
 
 

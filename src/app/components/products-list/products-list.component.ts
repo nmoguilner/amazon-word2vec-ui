@@ -17,26 +17,18 @@ export class ProductsListComponent implements OnInit {
     currentPage: 1
   }
 
+  noProducts = false;
+
   constructor(
     private productService: ProductService,
     private router: Router) {
   }
 
   ngOnInit() {
-
-
     this.productService.productsBS.subscribe((products: Product[]) => {
-      if (!products.length) {
-        return;
-      }
+      this.noProducts = !products.length;
       this.setPage(0, this.itemsPerPage)
       this.totalProducts = products.length;
-    });
-
-    this.productService.filteredProducts.subscribe((products: Product[]) => {
-      this.setPage(0, this.itemsPerPage)
-      this.totalProducts = products.length;
-      this.products = products;
     });
   }
 

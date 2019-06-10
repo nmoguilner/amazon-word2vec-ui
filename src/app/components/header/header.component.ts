@@ -3,6 +3,7 @@ import {ProductService} from "../../services/product.service";
 import {CategoryTree} from "../../entities/CategoryTree";
 import {fromEvent} from "rxjs";
 import {debounceTime, distinctUntilChanged, map} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,7 @@ export class HeaderComponent implements OnInit {
   categories: CategoryTree;
   @ViewChild('searchProductsInput') searchProductsInput: ElementRef;
 
-  constructor(private productService: ProductService) {
+  constructor(private productService: ProductService, private router: Router) {
   }
 
   ngOnInit() {
@@ -26,6 +27,13 @@ export class HeaderComponent implements OnInit {
       this.categories = this.dicToCategoryTree(categories);
     });
   }
+
+  resetProducts() {
+    this.productService.resetProducts();
+    this.router.navigate(['products']);
+    this.searchProductsInput.nativeElement.value = '';
+  }
+
 
   private dicToCategoryTree(dictionary) {
     let recursive = (dict, categoryItem: CategoryTree) => {
@@ -56,11 +64,10 @@ export class HeaderComponent implements OnInit {
       debounceTime(190),
       distinctUntilChanged()
     ).subscribe((text: string) => {
-       this.productService.searchProducts(text.toLowerCase());
+        this.productService.searchProducts(text.toLowerCase());
       },
       error => console.log(error)
     );
   }
-
 
 }
