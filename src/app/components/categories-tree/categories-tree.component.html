@@ -1,4 +1,0 @@
-<div *ngFor="let child of children">
-  <span class="category-title" [ngClass]="child.depth === 2 ? 'bold' : ''">{{child.name}}</span>
-  <app-categories-tree class="category-children" [children]="child.children"></app-categories-tree>
-</div>

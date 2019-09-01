@@ -1,0 +1,5 @@
+<div *ngFor="let child of children">
+  <a href="javascript:void(5)" class="category-title" [ngClass]="child.depth === 2 ? 'bold' : ''"
+  (click)="searchByCategory(child.name)">{{child.name}}</a>
+  <app-category-tree class="category-children" [children]="child.children"></app-category-tree>
+</div>

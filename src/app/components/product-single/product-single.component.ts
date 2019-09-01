@@ -14,7 +14,7 @@ export class ProductSingleComponent implements OnInit {
   public product: Product;
   public recommended: Product[];
 
-  private topRecommendations = 20;
+  private topRecommendations = 10;
 
   constructor(
     private route: ActivatedRoute,

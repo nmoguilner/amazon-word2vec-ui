@@ -8,7 +8,7 @@ import {NgxSpinnerService} from "ngx-spinner";
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
-  title = 'angular-app';
+  title = 'amazon-word2vec-ui';
 
   constructor(private spinner: NgxSpinnerService, private productService: ProductService){}
 

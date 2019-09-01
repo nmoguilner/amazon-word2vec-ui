@@ -22,38 +22,10 @@ export class HeaderComponent implements OnInit {
     this.subscribeSearch();
   }
 
-  getCategories() {
-    this.productService.getCategories().subscribe(categories => {
-      this.categories = this.dicToCategoryTree(categories);
-    });
-  }
-
   resetProducts() {
     this.productService.resetProducts();
     this.router.navigate(['products']);
     this.searchProductsInput.nativeElement.value = '';
-  }
-
-
-  private dicToCategoryTree(dictionary) {
-    let recursive = (dict, categoryItem: CategoryTree) => {
-      const keys = Object.keys(dict);
-      categoryItem.depth++;
-      categoryItem.children.push(...keys.map(k => new CategoryTree(k, [], categoryItem.depth)));
-
-      for (let childNode of categoryItem.children) {
-        const key = childNode.name;
-        const children = Object.keys(dict[key]);
-
-        if (!!children.length) {
-          recursive(dict[key], childNode);
-        }
-      }
-    }
-
-    const rootNode = new CategoryTree('root');
-    recursive(dictionary, rootNode);
-    return rootNode;
   }
 
   private subscribeSearch() {
